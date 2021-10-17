@@ -1,4 +1,4 @@
-module github.com/sunnyh1220/keight-dev
+module github.com/sunnyh1220/keight-dev/client-go-examples
 
 go 1.15
 
