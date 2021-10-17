@@ -1,0 +1,24 @@
+# permissions for end users to edit appservices.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: appservice-editor-role
+rules:
+- apiGroups:
+  - app.sunnyh.easy
+  resources:
+  - appservices
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.sunnyh.easy
+  resources:
+  - appservices/status
+  verbs:
+  - get
