@@ -3,5 +3,9 @@ kind: AppService
 metadata:
   name: appservice-sample
 spec:
-  # Add fields here
-  foo: bar
+  replicas: 2
+  image: nginx:1.7.9
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30002
