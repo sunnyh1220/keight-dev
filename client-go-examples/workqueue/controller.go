@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-func workqueueSample()  {
+func workqueueSample() {
 	config := kubeconfig.NewConfig("C:\\Users\\zero\\GolandProjects\\github.com\\sunnyh1220\\keight-dev\\config.yaml")
 
 	clientset := kubernetes.NewForConfigOrDie(config)
@@ -29,19 +29,19 @@ func workqueueSample()  {
 		AddFunc: func(obj interface{}) {
 			key, err := cache.MetaNamespaceKeyFunc(obj)
 			if err == nil {
-				queue.Add(key)
+				queue.AddRateLimited(key)
 			}
 		},
 		UpdateFunc: func(oldObj, newObj interface{}) {
 			key, err := cache.MetaNamespaceKeyFunc(newObj)
 			if err == nil {
-				queue.Add(key)
+				queue.AddRateLimited(key)
 			}
 		},
 		DeleteFunc: func(obj interface{}) {
-			key, err := cache.MetaNamespaceKeyFunc(obj)
+			key, err := cache.DeletionHandlingMetaNamespaceKeyFunc(obj)
 			if err == nil {
-				queue.Add(key)
+				queue.AddRateLimited(key)
 			}
 		},
 	})
@@ -70,7 +70,7 @@ func (c *PodController) Run(workers int, stopCh chan struct{}) {
 
 	go c.podInformer.Informer().Run(stopCh)
 
-	if ! cache.WaitForCacheSync(stopCh, c.podInformer.Informer().HasSynced) {
+	if !cache.WaitForCacheSync(stopCh, c.podInformer.Informer().HasSynced) {
 		return
 	}
 
@@ -78,7 +78,7 @@ func (c *PodController) Run(workers int, stopCh chan struct{}) {
 		go wait.Until(c.runWorker, time.Second, stopCh)
 	}
 
-	<- stopCh
+	<-stopCh
 	klog.Info("shutting down pod controller")
 }
 
@@ -146,6 +146,6 @@ func (c *PodController) handleErr(err error, key interface{}) {
 func NewPodController(informer informerscorev1.PodInformer, queue workqueue.RateLimitingInterface) *PodController {
 	return &PodController{
 		podInformer: informer,
-		queue: queue,
+		queue:       queue,
 	}
 }
