@@ -1,0 +1,9 @@
+apiVersion: stable.sunnyh.easy/v1alpha1
+kind: CronTab
+metadata:
+  name: crontab-sample
+  namespace: default
+spec:
+  image: "nginx:1.7.9"
+  cronSpec: "* * * * */5"
+  replicas: 2
