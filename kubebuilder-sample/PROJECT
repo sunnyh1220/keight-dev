@@ -1,0 +1,16 @@
+domain: sunnyh.easy
+layout:
+- go.kubebuilder.io/v3
+projectName: kubebuilder-sample
+repo: github.com/sunnyh1220/keight-dev/kubebuilder-sample
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: sunnyh.easy
+  group: batch
+  kind: CronJob
+  path: github.com/sunnyh1220/keight-dev/kubebuilder-sample/api/v1
+  version: v1
+version: "3"
