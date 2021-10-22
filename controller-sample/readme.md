@@ -1,5 +1,5 @@
 
-## Controller Sample Step
+## Controller Sample Step By Step
 reference： https://github.com/kubernetes/sample-controller
 
 ### 项目初始化

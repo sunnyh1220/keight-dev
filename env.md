@@ -44,3 +44,14 @@ chmod +x operator-sdk_${OS}_${ARCH} && sudo mv operator-sdk_${OS}_${ARCH} /usr/l
 # remove
 sudo rm /usr/local/bin/operator-sdk
 ```
+
+### kubebuilder
+```bash
+# go1.15 使用 kubebuilder3.0.0
+$ curl -L -o kubebuilder https://github.com/kubernetes-sigs/kubebuilder/releases/download/v3.0.0/kubebuilder_linux_amd64
+$ chmod +x kubebuilder && mv kubebuilder /usr/local/bin/
+
+$ kubebuilder version
+Version: main.version{KubeBuilderVersion:"3.0.0", KubernetesVendor:"1.19.2", GitCommit:"533874b302e9bf94cd7105831f8a543458752973", BuildDate:"2021-04-28T16:23:59Z", GoOs:"linux", GoArch:"amd64"}
+
+```
