@@ -1,0 +1,8 @@
+apiVersion: etcd.sunnyh.easy/v1alpha1
+kind: EtcdCluster
+metadata:
+  name: etcdcluster-sample
+spec:
+  replicas: 3
+  image: gcr.io/etcd-development/etcd:v3.4.13
+
