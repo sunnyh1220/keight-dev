@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etcd001
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /data/etcd001/
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etcd002
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /data/etcd002/
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etcd003
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /data/etcd003/
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etcd004
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /data/etcd004/
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etcd005
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /data/etcd005/
