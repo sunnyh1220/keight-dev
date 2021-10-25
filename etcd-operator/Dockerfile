@@ -1,6 +1,9 @@
 # Build the manager binary
 FROM golang:1.15 as builder
 
+# 压缩
+RUN apt-get -y update && apt-get -y install upx
+
 WORKDIR /workspace
 # Copy the Go Modules manifests
 COPY go.mod go.mod
@@ -13,9 +16,21 @@ RUN go mod download
 COPY main.go main.go
 COPY api/ api/
 COPY controllers/ controllers/
+COPY cmd/ cmd/
+COPY pkg/ pkg/
+
+# build env
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+ENV GOARCH=amd64
+ENV GO111MODULE=on
+ENV GOPROXY="https://goproxy.cn"
 
 # Build
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o manager main.go
+RUN go mod download && \
+		go build -a -o manager main.go && \
+		go build -a -o backup cmd/backup/main.go && \
+		upx manager backup
 
 # Use distroless as minimal base image to package the manager binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
@@ -23,5 +38,14 @@ FROM gcr.io/distroless/static:nonroot
 WORKDIR /
 COPY --from=builder /workspace/manager .
 USER 65532:65532
-
 ENTRYPOINT ["/manager"]
+
+
+FROM gcr.io/distroless/static:nonroot as backup
+WORKDIR /
+COPY --from=builder /workspace/backup .
+USER nonroot:nonroot
+ENTRYPOINT ["/backup"]
+
+# docker build --target backup -t hisunyh/etcd-operator-backup:v0.0.1 -f Dockerfile .
+# docker push hisunyh/etcd-operator-backup:v0.0.1

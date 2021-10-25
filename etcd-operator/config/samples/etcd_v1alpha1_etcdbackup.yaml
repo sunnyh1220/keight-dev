@@ -1,0 +1,15 @@
+apiVersion: etcd.sunnyh.easy/v1alpha1
+kind: EtcdBackup
+metadata:
+  name: etcdbackup-sample
+spec:
+  # etcdUrl: <etcd-cluster-endpoints>  # 备份的节点 etcd 地址
+  etcdUrl: http://etcdcluster-sample-0.etcdcluster-sample.default.svc.cluster.local:2379
+  storageType: s3  # 指定备份类型
+  s3:
+    path: "sunny/etcd-snapshot.db"  # 数据存放目录，格式：<bucket-name>/<object-path>
+    endpoint: "play.min.io"  # MINIO 地址
+    secret: "minio-access-secret"   # 包含 accessKeyID 与 secretAccessKey
+#   oss:
+#     path: "foo-bucket/snapshot.db"
+#     secret: "secret"

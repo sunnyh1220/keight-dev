@@ -86,6 +86,16 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "EtcdCluster")
 		os.Exit(1)
 	}
+	if err = (&controllers.EtcdBackupReconciler{
+		Client:      mgr.GetClient(),
+		Log:         ctrl.Log.WithName("controllers").WithName("EtcdBackup"),
+		Scheme:      mgr.GetScheme(),
+		Recorder:    mgr.GetEventRecorderFor("etcdbackup-controller"), // 初始化 Recorder
+		BackupImage: "hisunyh/etcd-operator-backup:v0.0.1",
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "EtcdBackup")
+		os.Exit(1)
+	}
 	//+kubebuilder:scaffold:builder
 
 	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {

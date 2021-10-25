@@ -13,4 +13,13 @@ resources:
   kind: EtcdCluster
   path: github.com/sunnyh1220/keight-dev/etcd-operator/api/v1alpha1
   version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: sunnyh.easy
+  group: etcd
+  kind: EtcdBackup
+  path: github.com/sunnyh1220/keight-dev/etcd-operator/api/v1alpha1
+  version: v1alpha1
 version: "3"
