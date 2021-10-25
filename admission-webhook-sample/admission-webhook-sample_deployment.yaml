@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admission-webhook-sample
+  labels:
+    app: admission-webhook-sample
+spec:
+  selector:
+    matchLabels:
+      app: admission-webhook-sample
+  template:
+    metadata:
+      labels:
+        app: admission-webhook-sample
+    spec:
+      containers:
+        - name: whitelist
+          image: hisunyh/admission-webhook-sample:v0.0.1
+          imagePullPolicy: Always
+          env:
+          - name: WHITELIST_REGISTRIES
+            value: "docker.io,gcr.io"
+          ports:
+          - containerPort: 443
+          volumeMounts:
+          - name: webhook-certs
+            mountPath: /etc/webhook/certs
+            readOnly: true
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: admission-webhook-sample-tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admission-webhook-sample
+  labels:
+    app: admission-webhook-sample
+spec:
+  ports:
+  - port: 443
+    targetPort: 443
+  selector:
+    app: admission-webhook-sample
