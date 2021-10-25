@@ -23,6 +23,8 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/tools/record"
+	"strings"
+	"text/template"
 
 	"github.com/go-logr/logr"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -199,8 +201,27 @@ func podForBackup(backup *etcdv1alpha1.EtcdBackup, image string) (*corev1.Pod, e
 	var backupURL, backupEndpoint string
 
 	if backup.Spec.StorageType == etcdv1alpha1.EtcdBackupStorageTypeS3 {
-		backupURL = fmt.Sprintf("%s://%s", backup.Spec.StorageType, backup.Spec.S3.Path)
+		//backupURL = fmt.Sprintf("%s://%s", backup.Spec.StorageType, backup.Spec.S3.Path)
+
+		// 备份路径模板化
+		// format：
+		// s3://my-bucket/my-dir/my-object.db
+		// s3://my-bucket/{{ .Namespace }}/{{ .Name }}/{{ .CreationTimestamp }}/snapshot.db
+		// s3://my-bucket/snapshot-{{ .UID }}.db
+		// 备份的目的地址支持 go-template
+		tmpl, err := template.New("template").Parse(backup.Spec.S3.Path)
+		if err != nil {
+			return nil, fmt.Errorf("error %q parsing object URL template", err)
+		}
+		// 解析成备份地址
+		var objectURL strings.Builder
+		if err := tmpl.Execute(&objectURL, backup); err != nil {
+			return nil, fmt.Errorf("error %q executing template", err)
+		}
+		backupURL = fmt.Sprintf("%s://%s", backup.Spec.StorageType, objectURL.String())
+
 		backupEndpoint = backup.Spec.S3.Endpoint
+
 		secretRef = &corev1.SecretEnvSource{
 			LocalObjectReference: corev1.LocalObjectReference{
 				Name: backup.Spec.S3.Secret,
