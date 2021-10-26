@@ -1,6 +1,8 @@
+### 自定义准入控制器
 
 查看kube-apiserver是否启用Admission Webhook
 如果没有MutatingAdmissionWebhook,ValidatingAdmissionWebhook两个参数，添加后重启apiserver
+
 ```bash
 # minikube
 $ kubectl get pods kube-apiserver-minikube -n kube-system -o yaml | grep enable-admission-plugins
@@ -110,7 +112,7 @@ $ kubectl create secret tls admission-webhook-sample-tls \
 
 docker镜像构建
 ```bash
-$ docker build -t hisunyh/admission-webhook-sample:v0.0.1 .
+$ docker build --target manager -t hisunyh/dmission-webhook-sample:v0.0.1 -f Dockerfile .
 $ docker push hisunyh/admission-webhook-sample:v0.0.1
 ```
 
@@ -200,4 +202,32 @@ EOF
 ```bash
 $ kubectl apply -f mutatingwebhook.yaml
 $ kubectl get mutatingwebhookconfiguration
+```
+
+```bash
+# remove all
+kubectl delete -f mutatingwebhook.yaml
+kubectl delete -f validatingwebhook.yaml 
+kubectl delete -f admission-webhook-sample_deployment.yaml 
+kubectl delete secret admission-webhook-sample-tls
+```
+
+
+
+### 自动管理准入控制器证书&自定注册准入控制器
+
+```bash
+docker build --target tls -t hisunyh/admission-webhook-sample-tls:v0.0.1 -f Dockerfile .
+docker push hisunyh/admission-webhook-sample-tls:v0.0.1
+```
+
+```bash
+kubectl apply -f admission-webhook-sample-tls_deployment.yaml
+```
+
+```bash
+# remove
+kubectl delete validatingwebhookconfiguration admission-webhook-sample
+kubectl delete mutatingwebhookconfiguration admission-webhook-sample-mutate
+kubectl delete -f admission-webhook-sample-tls_deployment.yaml
 ```
