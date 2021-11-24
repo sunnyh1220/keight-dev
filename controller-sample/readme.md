@@ -1,6 +1,7 @@
 
 ## Controller Sample Step By Step
-reference： https://github.com/kubernetes/sample-controller
+> reference： https://github.com/kubernetes/sample-controller
+>
 
 ### 项目初始化
 init project
@@ -71,11 +72,9 @@ EOF
 
 ```
 
-type.go
-自定义资源类型定义
+type.go --> 自定义资源类型定义
 
-register.go
-Resource(),AddToSchema实现
+register.go -->  Resource(),AddToSchema实现
 
 
 generate自动生成代码
@@ -104,9 +103,8 @@ EOF
 
 ```
 
+`update-codegen.sh` 根据项目结构修改
 
-update-codegen.sh
-根据项目结构修改
 ```shell
 #!/usr/bin/env bash
 
@@ -127,8 +125,8 @@ bash "${CODEGEN_PKG}"/generate-groups.sh "deepcopy,client,informer,lister" \
 #   --go-header-file "${SCRIPT_ROOT}"/hack/custom-boilerplate.go.txt
 ```
 
-verify-codegen.sh
-不需要修改
+`verify-codegen.sh` 不需要修改
+
 ```shell
 #!/usr/bin/env bash
 
@@ -209,5 +207,4 @@ apply crontab sample
 ```bash
 kubectl apply -f config/samples/stable_v1alpha1_crontab.yaml
 ```
-
 

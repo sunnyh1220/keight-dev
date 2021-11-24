@@ -1,8 +1,8 @@
-
 本地创建多节点etcd集群
-reference： 
-https://github.com/etcd-io/etcd/blob/v3.4.18/README.md#running-a-local-etcd-cluster
-https://github.com/etcd-io/etcd/releases/tag/v3.4.18
+
+> reference： 
+> https://github.com/etcd-io/etcd/blob/v3.4.18/README.md#running-a-local-etcd-cluster
+> https://github.com/etcd-io/etcd/releases/tag/v3.4.18
 
 ```bash
 # etcd version
@@ -57,8 +57,10 @@ docker
 ```
 
 k8s
-reference:
-https://github.com/kubernetes/kubernetes/tree/v1.19.15/test/e2e/testing-manifests/statefulset/etcd
+
+> reference:
+> https://github.com/kubernetes/kubernetes/tree/v1.19.15/test/e2e/testing-manifests/statefulset/etcd
+
 ```bash
 # 没有storageclass可以使用hostpath作为pv
 kubectl apply -f ./deploy/pv.yaml
