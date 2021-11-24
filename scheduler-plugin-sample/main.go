@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/sunnyh1220/keight-dev/scheduler-sample/pkg/myplugins/sample"
+	"github.com/sunnyh1220/keight-dev/scheduler-plugin-sample/pkg/myplugins/sample"
 	"math/rand"
 	"os"
 	"time"

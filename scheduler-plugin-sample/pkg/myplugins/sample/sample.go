@@ -10,14 +10,14 @@ import (
 	framework "k8s.io/kubernetes/pkg/scheduler/framework/v1alpha1"
 )
 
-type SampleArgs struct {
+type Args struct {
 	FavoriteColor  string `json:"favoriteColor"`
 	FavoriteNumber int    `json:"favoriteNumber"`
 	ThanksTo       string `json:"thanksTo"`
 }
 
 type Sample struct {
-	args   *SampleArgs
+	args   *Args
 	handle framework.FrameworkHandle
 }
 
@@ -104,8 +104,8 @@ func New(object runtime.Object, f framework.FrameworkHandle) (framework.Plugin, 
 	}, nil
 }
 
-func getSampleArgs(object runtime.Object) (*SampleArgs, error) {
-	sa := &SampleArgs{}
+func getSampleArgs(object runtime.Object) (*Args, error) {
+	sa := &Args{}
 	if err := frameworkruntime.DecodeInto(object, sa); err != nil {
 		return nil, err
 	}

@@ -1,4 +1,4 @@
-module github.com/sunnyh1220/keight-dev/scheduler-sample
+module github.com/sunnyh1220/keight-dev/scheduler-plugin-sample
 
 go 1.15
 
