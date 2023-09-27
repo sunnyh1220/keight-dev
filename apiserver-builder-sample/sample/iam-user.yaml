@@ -1,0 +1,8 @@
+apiVersion: iam.keight.io/v1alpha1
+kind: User
+metadata:
+  name: alice
+spec:
+  email: "jane@example.com"
+  password: "password"
+  phone: "15852499117"
